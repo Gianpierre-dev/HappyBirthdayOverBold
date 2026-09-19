@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="es" data-edicion="plata">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Overlord XXIV</title>
+  <meta name="description" content="Edición única por los 24 años de Overlord.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --negro: #000;
+      --hueso: #dcd8cf;
+      --ceniza: #8d8b85;
+      --sangre: #8f1118;
+      --clinico: #6fb3b8;
+      --linea: #262624;
+      --acento: #c3c6ca;
+      --acento-oscuro: #6d7075;
+      --ancho: 1100px;
+      --margen: 20px;
+    }
+    :root[data-edicion="sangre"] { --acento: #b3161f; --acento-oscuro: #4a0509; }
+    :root[data-edicion="oro"] { --acento: #b3952f; --acento-oscuro: #4d2f12; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--negro);
+      color: var(--hueso);
+      font-family: "Archivo", system-ui, sans-serif;
+      font-size: 1.0625rem;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    :focus-visible { outline: 3px solid var(--clinico); outline-offset: 4px; }
+
+    .solo-lectores {
+      position: absolute; width: 1px; height: 1px; overflow: hidden;
+      clip-path: inset(50%); white-space: nowrap;
+    }
+    .contenedor { width: min(100% - var(--margen) * 2, var(--ancho)); margin-inline: auto; }
+    .seccion { padding-block: clamp(4rem, 10vw, 7.5rem); border-top: 1px solid var(--linea); }
+    .titulo-seccion {
+      margin: 0 0 0.4em;
+      font-family: "Anton", Impact, sans-serif;
+      font-weight: 400;
+      font-size: clamp(2.4rem, 7vw, 4.5rem);
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+    }
+    .entradilla { margin: 0 0 2.5rem; max-width: 56ch; color: var(--ceniza); }
+
+    /* Barra superior */
+    .barra {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-block: 1rem;
+    }
+    .sello { font-family: "UnifrakturCook", serif; font-size: 1.5rem; color: var(--acento); }
+    .idiomas { display: flex; border: 1px solid var(--linea); }
+    .idiomas button {
+      background: none; border: 0; padding: 0.4rem 0.85rem;
+      font-weight: 600; font-size: 0.9rem; color: var(--ceniza);
+    }
+    .idiomas button[aria-pressed="true"] { background: var(--acento); color: var(--negro); }
+
+    /* Portada */
+    .portada { padding-bottom: clamp(3rem, 8vw, 6rem); }
+    .logo {
+      display: block; width: 100%; padding: 0; border: 0; background: none;
+    }
+    .logo svg { display: block; width: 100%; height: auto; overflow: visible; }
+    .logo text { font-family: "UnifrakturCook", serif; font-weight: 700; }
+    .logo-pista { margin: 0.5rem 0 0; text-align: center; color: var(--ceniza); font-size: 0.95rem; }
+
+    .disco {
+      display: grid; gap: clamp(1.5rem, 5vw, 4rem);
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      align-items: end;
+      margin-top: clamp(2rem, 6vw, 4rem);
+    }
+    .caratula { margin: 0; aspect-ratio: 4 / 5; overflow: hidden; border: 1px solid var(--linea); }
+    .caratula img { width: 100%; height: 100%; object-fit: cover; object-position: center bottom; }
+    .disco-titulo {
+      margin: 0;
+      font-family: "Anton", Impact, sans-serif; font-weight: 400;
+      font-size: clamp(3rem, 9vw, 6.5rem); line-height: 0.95; text-transform: uppercase;
+    }
+    .disco-titulo span { display: block; color: var(--acento); }
+    .disco-texto { margin: 1.25rem 0 2rem; max-width: 46ch; }
+
+    .ediciones { margin: 0; padding: 0; border: 0; }
+    .ediciones legend { padding: 0; margin-bottom: 0.6rem; color: var(--ceniza); font-size: 0.95rem; }
+    .ediciones-lista { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .ediciones input { position: absolute; opacity: 0; }
+    .ediciones label {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      padding: 0.5rem 0.9rem; border: 1px solid var(--linea); cursor: pointer; font-weight: 600;
+    }
+    .ediciones label::before {
+      content: ""; width: 0.9rem; height: 0.9rem; border-radius: 50%; background: var(--muestra);
+    }
+    .ediciones input:checked + label { border-color: var(--acento); }
+    .ediciones input:focus-visible + label { outline: 3px solid var(--clinico); outline-offset: 4px; }
+
+    /* Carrusel de cronicas */
+    .carrusel-pista {
+      position: relative; display: flex; gap: 1.5rem; margin: 0; padding: 0; list-style: none;
+      overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+    }
+    .carrusel-pista::-webkit-scrollbar { display: none; }
+    .lamina {
+      flex: 0 0 100%; scroll-snap-align: start;
+      display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+      gap: clamp(1.5rem, 4vw, 3.5rem); align-items: end;
+      padding: clamp(1rem, 3vw, 2rem); border: 1px solid var(--linea);
+      background: linear-gradient(160deg, #0d0d0d, var(--negro) 60%);
+    }
+    .lamina img {
+      width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 25%;
+      filter: grayscale(1) contrast(1.25) brightness(0.8);
+    }
+    .lamina-numero { display: block; font-family: "UnifrakturCook", serif; font-size: clamp(3rem, 8vw, 5.5rem); line-height: 1; color: var(--acento); }
+    .lamina-titulo {
+      margin: 0.5rem 0 1rem; font-family: "Anton", Impact, sans-serif; font-weight: 400;
+      font-size: clamp(1.8rem, 4.6vw, 3.2rem); line-height: 1.05; text-transform: uppercase; max-width: 18ch;
+    }
+    .lamina-texto p { margin: 0; max-width: 50ch; }
+    .carrusel-controles { display: flex; align-items: center; justify-content: space-between; margin-top: 1.25rem; }
+    .carrusel-boton {
+      width: 3.25rem; height: 3.25rem; border: 1px solid var(--linea); background: none;
+      font-size: 2rem; line-height: 1; color: var(--hueso);
+    }
+    .carrusel-boton:hover:not(:disabled) { border-color: var(--acento); color: var(--acento); }
+    .carrusel-boton:disabled { opacity: 0.3; cursor: default; }
+    .carrusel-contador { margin: 0; font-family: "UnifrakturCook", serif; font-size: 1.5rem; color: var(--ceniza); }
+
+    /* Multiverso */
+    .selector { display: grid; gap: 1.5rem; grid-template-columns: minmax(0, 1fr) 150px; }
+    .personaje { margin: 0; }
+    .personaje-marco { aspect-ratio: 16 / 10; overflow: hidden; border: 1px solid var(--linea); background: #0a0a0a; }
+    .personaje-marco img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+    .personaje figcaption { padding-top: 1rem; }
+    .personaje-nombre {
+      margin: 0; font-family: "Anton", Impact, sans-serif; font-weight: 400;
+      font-size: clamp(1.6rem, 4vw, 2.6rem); line-height: 1.05; text-transform: uppercase;
+    }
+    .personaje-clase { margin: 0.25rem 0 0.5rem; color: var(--clinico); font-weight: 600; }
+    .personaje-frase { margin: 0; max-width: 52ch; color: var(--ceniza); }
+    .miniaturas { display: grid; gap: 0.5rem; align-content: start; }
+    .miniaturas button {
+      padding: 0; border: 2px solid var(--linea); background: none; aspect-ratio: 4 / 3; overflow: hidden;
+    }
+    .miniaturas img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; filter: grayscale(1); }
+    .miniaturas button[aria-pressed="true"] { border-color: var(--acento); }
+    .miniaturas button[aria-pressed="true"] img { filter: none; }
+
+    /* Breakdown */
+    .breakdown { text-align: center; }
+    .breakdown .entradilla { margin-inline: auto; }
+    .boton-breakdown {
+      padding: 1.1rem 2.2rem; border: 2px solid var(--sangre); background: var(--sangre);
+      font-family: "Anton", Impact, sans-serif; font-size: clamp(1.3rem, 4vw, 2rem);
+      text-transform: uppercase; letter-spacing: 0.03em; color: var(--hueso);
+    }
+    .boton-breakdown:hover { background: var(--negro); }
+    .grito {
+      margin: 3rem 0 0;
+      font-family: "Anton", Impact, sans-serif; font-weight: 400;
+      font-size: clamp(3.2rem, 15vw, 12rem); line-height: 0.9; text-transform: uppercase;
+      color: var(--acento);
+    }
+    .grito[hidden] { display: none; }
+    .grito small { display: block; font-family: "UnifrakturCook", serif; font-size: 0.35em; color: var(--hueso); text-transform: none; }
+
+    .destello { position: fixed; inset: 0; background: var(--sangre); opacity: 0; pointer-events: none; z-index: 20; }
+    .confeti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 21; }
+    .sacudida { animation: sacudir 0.6s linear; }
+    .destello.activo { animation: destellar 0.6s ease-out; }
+    @keyframes sacudir {
+      0%, 100% { transform: translate(0, 0); }
+      10% { transform: translate(-10px, 6px); } 20% { transform: translate(9px, -7px); }
+      30% { transform: translate(-8px, -5px); } 40% { transform: translate(8px, 6px); }
+      50% { transform: translate(-6px, 4px); } 60% { transform: translate(6px, -4px); }
+      70% { transform: translate(-4px, 3px); } 80% { transform: translate(3px, -2px); }
+      90% { transform: translate(-2px, 1px); }
+    }
+    @keyframes destellar { 0% { opacity: 0.75; } 100% { opacity: 0; } }
+
+    /* Notas del disco */
+    .notas-rejilla { display: grid; gap: clamp(1.5rem, 5vw, 4rem); grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: start; }
+    .notas-texto p { margin: 0 0 1.1em; max-width: 58ch; }
+    .notas-para { font-family: "UnifrakturCook", serif; font-size: 1.6rem; line-height: 1.2; color: var(--acento); }
+    .notas-firma { font-family: "UnifrakturCook", serif; font-size: 2rem; color: var(--acento); }
+    .notas-foto { margin: 0; border: 1px solid var(--linea); }
+
+    .pie { padding-block: 2rem 3rem; border-top: 1px solid var(--linea); color: var(--ceniza); font-size: 0.95rem; }
+    .pie p { margin: 0; }
+
+    @media (max-width: 760px) {
+      .disco, .notas-rejilla, .selector { grid-template-columns: minmax(0, 1fr); }
+      .miniaturas { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .lamina { grid-template-columns: minmax(0, 1fr); }
+      .lamina img { max-width: 260px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .sacudida, .destello.activo { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="escenario" id="escenario">
+    <header class="contenedor barra">
+      <span class="sello" aria-hidden="true">OL</span>
+      <div class="idiomas" role="group" aria-label="Idioma / Language">
+        <button type="button" data-idioma="es" aria-pressed="true">ES</button>
+        <button type="button" data-idioma="en" aria-pressed="false">EN</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="contenedor portada">
+        <h1 class="solo-lectores" data-i18n="tituloPagina">Feliz cumpleaños, Overlord</h1>
+
+        <button type="button" class="logo" id="logo" aria-pressed="false" aria-describedby="logo-pista">
+          <span class="solo-lectores" data-i18n="logoAccion">Descifrar el logo</span>
+          <svg viewBox="0 0 1200 400" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="degradado" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0.15" style="stop-color: var(--acento)"/>
+                <stop offset="1" style="stop-color: var(--acento-oscuro)"/>
+              </linearGradient>
+              <filter id="putrefaccion" x="-10%" y="-40%" width="120%" height="180%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.085 0.012" numOctaves="2" seed="24" result="ruido"/>
+                <feDisplacementMap id="desplazamiento" in="SourceGraphic" in2="ruido" scale="80" xChannelSelector="R" yChannelSelector="G"/>
+              </filter>
+            </defs>
+            <g filter="url(#putrefaccion)" fill="url(#degradado)">
+              <text x="600" y="165" text-anchor="middle" font-size="150" textLength="1120" lengthAdjust="spacingAndGlyphs" data-i18n="logoLinea">Feliz Cumpleaños</text>
+              <text x="600" y="350" text-anchor="middle" font-size="200" textLength="900" lengthAdjust="spacingAndGlyphs">Overlord</text>
+            </g>
+          </svg>
+        </button>
+        <p class="logo-pista" id="logo-pista" data-i18n="logoPista">Como todo buen logo del género, no se entiende nada. Tócalo para descifrarlo.</p>
+
+        <div class="disco">
+          <figure class="caratula">
+            <img id="caratula" src="img/7.png" width="1240" height="1600" alt="Carátula del disco con el arte favorito de Overlord" data-i18n-alt="caratulaAlt">
+          </figure>
+          <div>
+            <h2 class="disco-titulo">Overlord <span>XXIV</span></h2>
+            <p class="disco-texto" data-i18n="discoTexto">Veinticuatro años en producción y por fin sale el disco. Cero baladas, cero voces limpias y una sola copia en todo el mundo: la tuya.</p>
+            <fieldset class="ediciones">
+              <legend data-i18n="edicionesLeyenda">Elige el color de tu edición</legend>
+              <div class="ediciones-lista">
+                <input type="radio" name="edicion" id="edicion-plata" value="plata" checked>
+                <label for="edicion-plata" style="--muestra: #c3c6ca" data-i18n="edicionPlata">Plata</label>
+                <input type="radio" name="edicion" id="edicion-sangre" value="sangre">
+                <label for="edicion-sangre" style="--muestra: #b3161f" data-i18n="edicionSangre">Sangre</label>
+                <input type="radio" name="edicion" id="edicion-oro" value="oro">
+                <label for="edicion-oro" style="--muestra: #b3952f" data-i18n="edicionOro">Oro</label>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </section>
+
+      <section class="seccion" aria-labelledby="titulo-cronicas">
+        <div class="contenedor">
+          <h2 class="titulo-seccion" id="titulo-cronicas" data-i18n="temasTitulo">Crónicas del Overlord</h2>
+          <p class="entradilla" data-i18n="temasEntradilla">Seis momentos para ver con poca luz. Desliza o usa los botones para pasar de una a otra.</p>
+
+          <div class="carrusel" role="region" aria-roledescription="carrusel" aria-labelledby="titulo-cronicas">
+            <ol class="carrusel-pista" id="carrusel-pista" tabindex="0">
+              <li class="lamina" role="group" aria-roledescription="lámina" aria-label="I">
+                <img src="img/1.png" width="1028" height="771" loading="lazy" alt="Selfie de Overlord con los ojos muy abiertos" data-i18n-alt="foto1Alt">
+                <div class="lamina-texto">
+                  <span class="lamina-numero" aria-hidden="true">I</span>
+                  <h3 class="lamina-titulo" data-i18n="lamina1">El dictador</h3>
+                </div>
+              </li>
+              <li class="lamina" role="group" aria-roledescription="lámina" aria-label="II">
+                <img src="img/2.png" width="1472" height="704" loading="lazy" alt="Tres versiones de Overlord abrazadas en un parque de noche" data-i18n-alt="foto2Alt">
+                <div class="lamina-texto">
+                  <span class="lamina-numero" aria-hidden="true">II</span>
+                  <h3 class="lamina-titulo" data-i18n="lamina2">Haciendo el trío con el multiverso (no importa si es un bebitom)</h3>
+                </div>
+              </li>
+              <li class="lamina" role="group" aria-roledescription="lámina" aria-label="III">
+                <img src="img/3.png" width="578" height="771" loading="lazy" alt="Selfie de Gian con Overlord serio en el fondo" data-i18n-alt="foto3Alt">
+                <div class="lamina-texto">
+                  <span class="lamina-numero" aria-hidden="true">III</span>
+                  <h3 class="lamina-titulo" data-i18n="lamina3">Tú escuchando mi historia de la Bajada de Reyes</h3>
+                </div>
+              </li>
+              <li class="lamina" role="group" aria-roledescription="lámina" aria-label="IV">
+                <img src="img/4.png" width="1600" height="1200" loading="lazy" alt="Gian y Overlord juntos, sonriendo en la calle" data-i18n-alt="foto4Alt">
+                <div class="lamina-texto">
+                  <span class="lamina-numero" aria-hidden="true">IV</span>
+                  <h3 class="lamina-titulo" data-i18n="lamina4">Escuchando tu discurso ultraderecha de tres horas</h3>
+                </div>
+              </li>
+              <li class="lamina" role="group" aria-roledescription="lámina" aria-label="V">
+                <img src="img/5.png" width="636" height="780" loading="lazy" alt="Overlord en la playa al atardecer, vestido de negro" data-i18n-alt="foto5Alt">
+                <div class="lamina-texto">
+                  <span class="lamina-numero" aria-hidden="true">V</span>
+                  <h3 class="lamina-titulo" data-i18n="lamina5">De mujer eres recontra kchable</h3>
+                </div>
+              </li>
+              <li class="lamina" role="group" aria-roledescription="lámina" aria-label="VI">
+                <img src="img/6.png" width="259" height="322" loading="lazy" alt="Overlord de perfil, con la melena rizada en primer plano" data-i18n-alt="foto6Alt">
+                <div class="lamina-texto">
+                  <span class="lamina-numero" aria-hidden="true">VI</span>
+                  <h3 class="lamina-titulo" data-i18n="lamina6">Posser distinguido</h3>
+                </div>
+              </li>
+            </ol>
+            <div class="carrusel-controles">
+              <button type="button" class="carrusel-boton" id="carrusel-anterior">
+                <span aria-hidden="true">&lsaquo;</span>
+                <span class="solo-lectores" data-i18n="carruselAnterior">Historia anterior</span>
+              </button>
+              <p class="carrusel-contador" id="carrusel-contador" aria-live="polite">I / VI</p>
+              <button type="button" class="carrusel-boton" id="carrusel-siguiente">
+                <span aria-hidden="true">&rsaquo;</span>
+                <span class="solo-lectores" data-i18n="carruselSiguiente">Historia siguiente</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="seccion" aria-labelledby="titulo-multiverso">
+        <div class="contenedor">
+          <h2 class="titulo-seccion" id="titulo-multiverso" data-i18n="multiversoTitulo">Multiverso Overlord</h2>
+          <p class="entradilla" data-i18n="multiversoEntradilla">En todas las realidades hay uno. Elige tu personaje.</p>
+
+          <div class="selector">
+            <figure class="personaje" aria-live="polite">
+              <div class="personaje-marco"><img id="personaje-imagen" src="img/conter.png" width="1024" height="768" alt=""></div>
+              <figcaption>
+                <p class="personaje-nombre" id="personaje-nombre"></p>
+                <p class="personaje-clase" id="personaje-clase"></p>
+                <p class="personaje-frase" id="personaje-frase"></p>
+              </figcaption>
+            </figure>
+            <div class="miniaturas" id="miniaturas"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="seccion breakdown" aria-labelledby="titulo-breakdown">
+        <div class="contenedor">
+          <h2 class="titulo-seccion" id="titulo-breakdown" data-i18n="breakdownTitulo">Aquí viene el breakdown</h2>
+          <p class="entradilla" data-i18n="breakdownEntradilla">Despeja el área, avisa a los vecinos y sube el volumen imaginario.</p>
+          <button type="button" class="boton-breakdown" id="boton-breakdown" data-i18n="breakdownBoton">Soltar el breakdown</button>
+          <p class="grito" id="grito" hidden>
+            <span data-i18n="grito">Feliz cumpleaños</span>
+            <small data-i18n="gritoDetalle">veinticuatro años de puro blast beat</small>
+          </p>
+        </div>
+      </section>
+
+      <section class="seccion" aria-labelledby="titulo-notas">
+        <div class="contenedor">
+          <h2 class="titulo-seccion" id="titulo-notas" data-i18n="notasTitulo">Notas del disco</h2>
+          <div class="notas-rejilla">
+            <div class="notas-texto">
+              <p class="notas-para" data-i18n="notasPara">Para Jose Luis, el Overlord.</p>
+              <p data-i18n="notas1">No pensé conocer entre peruanos criollos a una raza superior, digno de un dictador nazi, fascista, racista y que use Insta. Instantáneamente tu orden, el buen trabajo que haces y la excelente persona que eres, me lleva a que no me importa que seas un bebitom, ni que tu Diepiify te haya bloqueado.</p>
+              <p data-i18n="notas2">Eres una gran persona y con un corazón que pocos quedan. Te quiero mucho hermanito, tendrás mi apoyo incondicionalmente.</p>
+              <p data-i18n="notas3">Feliz 24. Cheveranding!</p>
+              <p class="notas-firma">Gian</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="pie">
+      <div class="contenedor">
+        <p data-i18n="pie">Edición única de una sola copia, prensada el 18 de septiembre de 2026. Prohibida su reproducción a bajo volumen.</p>
+      </div>
+    </footer>
+  </div>
+
+  <div class="destello" id="destello" aria-hidden="true"></div>
+  <canvas class="confeti" id="confeti" aria-hidden="true"></canvas>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const TEXTOS_EN = {
+        tituloPagina: 'Happy birthday, Overlord',
+        logoAccion: 'Decode the logo',
+        logoLinea: 'Happy Birthday',
+        logoPista: 'Like any proper logo in the genre, it is unreadable. Tap it to decode it.',
+        caratulaAlt: "Album cover featuring Overlord's favorite artwork",
+        discoTexto: 'Twenty-four years in production and the record is finally out. Zero ballads, zero clean vocals and a single copy in the whole world: yours.',
+        edicionesLeyenda: 'Pick the color of your edition',
+        edicionPlata: 'Silver',
+        edicionSangre: 'Blood',
+        edicionOro: 'Gold',
+        temasTitulo: 'Chronicles of the Overlord',
+        temasEntradilla: 'Six moments to look at in low light. Swipe or use the buttons to move between them.',
+        lamina1: 'The dictator',
+        lamina2: 'Having a threesome with the multiverse (it does not matter if he is a bebitom)',
+        lamina3: 'You listening to my Bajada de Reyes story',
+        lamina4: 'Listening to your three-hour far-right speech',
+        lamina5: 'As a woman you are extremely kchable',
+        lamina6: 'Distinguished poser',
+        carruselAnterior: 'Previous story',
+        carruselSiguiente: 'Next story',
+        foto2Alt: 'Three versions of Overlord hugging in a park at night',
+        foto5Alt: 'Overlord on the beach at sunset, dressed in black',
+        foto6Alt: 'Overlord in profile, curly mane front and center',
+        foto1Alt: 'Selfie of Overlord with eyes wide open',
+        foto3Alt: 'Selfie of Gian with a serious Overlord in the background',
+        foto4Alt: 'Gian and Overlord together, smiling on the street',
+        multiversoTitulo: 'Overlord multiverse',
+        multiversoEntradilla: 'Every reality has one. Choose your character.',
+        breakdownTitulo: 'Here comes the breakdown',
+        breakdownEntradilla: 'Clear the area, warn the neighbors and turn up the imaginary volume.',
+        breakdownBoton: 'Drop the breakdown',
+        breakdownBotonRepetir: 'Drop the breakdown again',
+        grito: 'Happy birthday',
+        gritoDetalle: 'twenty-four years of pure blast beat',
+        notasTitulo: 'Liner notes',
+        notasPara: 'For Jose Luis, the Overlord.',
+        notas1: 'I never thought I would meet, among criollo Peruvians, a superior race, worthy of a Nazi, fascist, racist dictator who uses Insta. Instantly your sense of order, the good work you do and the excellent person you are make me not care that you are a bebitom, or that your Diepiify blocked you.',
+        notas2: 'You are a great person, with the kind of heart there are few left of. I love you lots, little brother, you will have my unconditional support.',
+        notas3: 'Happy 24. Cheveranding!',
+        pie: 'Single-copy edition, pressed on September 18, 2026. Playback at low volume is strictly forbidden.'
+      };
+      const TEXTOS_ES = { breakdownBotonRepetir: 'Soltar el breakdown otra vez' };
+
+      const PERSONAJES = [
+        {
+          archivo: 'img/conter.png',
+          nombre: { es: 'Operador Overlord', en: 'Operator Overlord' },
+          clase: { es: 'Clase: antiterrorista', en: 'Class: counter-terrorist' },
+          frase: { es: 'Ejecución inmediata.', en: 'Immediate execution.' }
+        },
+        {
+          archivo: 'img/gtav.png',
+          nombre: { es: 'Overlord de Los Santos', en: 'Overlord of Los Santos' },
+          clase: { es: 'Clase: leyenda local', en: 'Class: local legend' },
+          frase: { es: 'Cheveranding!', en: 'Cheveranding!' }
+        },
+        {
+          archivo: 'img/cd3.png',
+          nombre: { es: 'Unidad OL-24', en: 'Unit OL-24' },
+          clase: { es: 'Clase: cíborg', en: 'Class: cyborg' },
+          frase: { es: 'Completa la misión de Ops 3.', en: 'Complete the Ops 3 mission.' }
+        }
+      ];
+
+      const CARATULAS = { plata: 'img/7.png', sangre: 'img/8.png', oro: 'img/9.png' };
+      const DISTORSION_MAXIMA = 80;
+      const SIN_MOVIMIENTO = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      let idiomaActual = 'es';
+      let personajeActual = 0;
+
+      /* Idioma */
+      const nodosTexto = document.querySelectorAll('[data-i18n]');
+      const nodosAlt = document.querySelectorAll('[data-i18n-alt]');
+      nodosTexto.forEach((nodo) => { TEXTOS_ES[nodo.dataset.i18n] ??= nodo.textContent; });
+      nodosAlt.forEach((nodo) => { TEXTOS_ES[nodo.dataset.i18nAlt] = nodo.alt; });
+
+      const leerIdiomaGuardado = () => {
+        try { return localStorage.getItem('idioma'); } catch { return null; }
+      };
+      const guardarIdioma = (idioma) => {
+        try { localStorage.setItem('idioma', idioma); } catch { /* almacenamiento no disponible */ }
+      };
+
+      const aplicarIdioma = (idioma) => {
+        idiomaActual = idioma === 'en' ? 'en' : 'es';
+        const textos = idiomaActual === 'en' ? TEXTOS_EN : TEXTOS_ES;
+        document.documentElement.lang = idiomaActual;
+        nodosTexto.forEach((nodo) => { nodo.textContent = textos[nodo.dataset.i18n]; });
+        nodosAlt.forEach((nodo) => { nodo.alt = textos[nodo.dataset.i18nAlt]; });
+        document.querySelectorAll('[data-idioma]').forEach((boton) => {
+          boton.setAttribute('aria-pressed', String(boton.dataset.idioma === idiomaActual));
+        });
+        mostrarPersonaje(personajeActual);
+      };
+
+      document.querySelectorAll('[data-idioma]').forEach((boton) => {
+        boton.addEventListener('click', () => {
+          aplicarIdioma(boton.dataset.idioma);
+          guardarIdioma(idiomaActual);
+        });
+      });
+
+      /* Logo: la distorsion baja a cero para que se pueda leer */
+      const logo = document.getElementById('logo');
+      const desplazamiento = document.getElementById('desplazamiento');
+      let animacionLogo = 0;
+
+      const animarDistorsion = (destino) => {
+        cancelAnimationFrame(animacionLogo);
+        if (SIN_MOVIMIENTO.matches) {
+          desplazamiento.setAttribute('scale', destino);
+          return;
+        }
+        const origen = Number(desplazamiento.getAttribute('scale'));
+        const inicio = performance.now();
+        const DURACION = 900;
+        const paso = (ahora) => {
+          const avance = Math.min((ahora - inicio) / DURACION, 1);
+          const suavizado = 1 - Math.pow(1 - avance, 3);
+          desplazamiento.setAttribute('scale', origen + (destino - origen) * suavizado);
+          if (avance < 1) animacionLogo = requestAnimationFrame(paso);
+        };
+        animacionLogo = requestAnimationFrame(paso);
+      };
+
+      logo.addEventListener('click', () => {
+        const descifrado = logo.getAttribute('aria-pressed') !== 'true';
+        logo.setAttribute('aria-pressed', String(descifrado));
+        animarDistorsion(descifrado ? 0 : DISTORSION_MAXIMA);
+      });
+
+      /* Ediciones */
+      const caratula = document.getElementById('caratula');
+      document.querySelectorAll('input[name="edicion"]').forEach((opcion) => {
+        opcion.addEventListener('change', () => {
+          document.documentElement.dataset.edicion = opcion.value;
+          caratula.src = CARATULAS[opcion.value];
+        });
+      });
+
+      /* Carrusel */
+      const NUMEROS_ROMANOS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+      const pista = document.getElementById('carrusel-pista');
+      const laminas = Array.from(pista.children);
+      const botonAnterior = document.getElementById('carrusel-anterior');
+      const botonSiguiente = document.getElementById('carrusel-siguiente');
+      const contador = document.getElementById('carrusel-contador');
+      let laminaActual = 0;
+
+      const actualizarControles = () => {
+        contador.textContent = `${NUMEROS_ROMANOS[laminaActual]} / ${NUMEROS_ROMANOS[laminas.length - 1]}`;
+        botonAnterior.disabled = laminaActual === 0;
+        botonSiguiente.disabled = laminaActual === laminas.length - 1;
+      };
+
+      const irALamina = (indice) => {
+        const destino = Math.max(0, Math.min(indice, laminas.length - 1));
+        pista.scrollTo({ left: laminas[destino].offsetLeft, behavior: SIN_MOVIMIENTO.matches ? 'auto' : 'smooth' });
+      };
+
+      pista.addEventListener('scroll', () => {
+        const distancias = laminas.map((lamina) => Math.abs(lamina.offsetLeft - pista.scrollLeft));
+        const masCercana = distancias.indexOf(Math.min(...distancias));
+        if (masCercana === laminaActual) return;
+        laminaActual = masCercana;
+        actualizarControles();
+      }, { passive: true });
+
+      botonAnterior.addEventListener('click', () => irALamina(laminaActual - 1));
+      botonSiguiente.addEventListener('click', () => irALamina(laminaActual + 1));
+      actualizarControles();
+
+      /* Multiverso */
+      const miniaturas = document.getElementById('miniaturas');
+      const personajeImagen = document.getElementById('personaje-imagen');
+      const personajeNombre = document.getElementById('personaje-nombre');
+      const personajeClase = document.getElementById('personaje-clase');
+      const personajeFrase = document.getElementById('personaje-frase');
+
+      function mostrarPersonaje(indice) {
+        personajeActual = indice;
+        const personaje = PERSONAJES[indice];
+        personajeImagen.src = personaje.archivo;
+        personajeImagen.alt = personaje.nombre[idiomaActual];
+        personajeNombre.textContent = personaje.nombre[idiomaActual];
+        personajeClase.textContent = personaje.clase[idiomaActual];
+        personajeFrase.textContent = personaje.frase[idiomaActual];
+        miniaturas.querySelectorAll('button').forEach((boton, posicion) => {
+          boton.setAttribute('aria-pressed', String(posicion === indice));
+          boton.setAttribute('aria-label', PERSONAJES[posicion].nombre[idiomaActual]);
+        });
+      }
+
+      PERSONAJES.forEach((personaje, indice) => {
+        const boton = document.createElement('button');
+        boton.type = 'button';
+        const imagen = document.createElement('img');
+        imagen.src = personaje.archivo;
+        imagen.alt = '';
+        boton.append(imagen);
+        boton.addEventListener('click', () => mostrarPersonaje(indice));
+        miniaturas.append(boton);
+      });
+
+      /* Breakdown */
+      const escenario = document.getElementById('escenario');
+      const destello = document.getElementById('destello');
+      const botonBreakdown = document.getElementById('boton-breakdown');
+      const grito = document.getElementById('grito');
+      const lienzo = document.getElementById('confeti');
+      const contexto = lienzo.getContext('2d');
+      let particulas = [];
+      let animacionConfeti = 0;
+
+      const reiniciarAnimacion = (elemento, clase) => {
+        elemento.classList.remove(clase);
+        void elemento.offsetWidth;
+        elemento.classList.add(clase);
+      };
+
+      const lanzarConfeti = () => {
+        const estilos = getComputedStyle(document.documentElement);
+        const colores = ['--acento', '--sangre', '--hueso', '--clinico'].map((nombre) => estilos.getPropertyValue(nombre).trim());
+        lienzo.width = window.innerWidth;
+        lienzo.height = window.innerHeight;
+        particulas = Array.from({ length: 160 }, () => ({
+          x: lienzo.width / 2,
+          y: lienzo.height * 0.6,
+          vx: (Math.random() - 0.5) * 26,
+          vy: -Math.random() * 22 - 6,
+          lado: Math.random() * 9 + 4,
+          giro: Math.random() * Math.PI,
+          color: colores[Math.floor(Math.random() * colores.length)]
+        }));
+        cancelAnimationFrame(animacionConfeti);
+        const dibujar = () => {
+          contexto.clearRect(0, 0, lienzo.width, lienzo.height);
+          particulas.forEach((p) => {
+            p.vy += 0.55;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.giro += 0.2;
+            contexto.save();
+            contexto.translate(p.x, p.y);
+            contexto.rotate(p.giro);
+            contexto.fillStyle = p.color;
+            contexto.fillRect(-p.lado / 2, -p.lado / 2, p.lado, p.lado * 0.6);
+            contexto.restore();
+          });
+          particulas = particulas.filter((p) => p.y < lienzo.height + 40);
+          if (particulas.length > 0) {
+            animacionConfeti = requestAnimationFrame(dibujar);
+          } else {
+            contexto.clearRect(0, 0, lienzo.width, lienzo.height);
+          }
+        };
+        animacionConfeti = requestAnimationFrame(dibujar);
+      };
+
+      botonBreakdown.addEventListener('click', () => {
+        grito.hidden = false;
+        botonBreakdown.dataset.i18n = 'breakdownBotonRepetir';
+        botonBreakdown.textContent = (idiomaActual === 'en' ? TEXTOS_EN : TEXTOS_ES).breakdownBotonRepetir;
+        if (SIN_MOVIMIENTO.matches) return;
+        reiniciarAnimacion(escenario, 'sacudida');
+        reiniciarAnimacion(destello, 'activo');
+        lanzarConfeti();
+      });
+
+      aplicarIdioma(leerIdiomaGuardado() ?? 'es');
+    })();
+  </script>
+</body>
+</html>
